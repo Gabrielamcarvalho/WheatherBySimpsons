@@ -175,11 +175,11 @@ function switchTheme(event) {
   if (event.target.checked) {
     document.documentElement.setAttribute('data-theme', DARK_THEME);
     localStorage.setItem('theme', DARK_THEME);
-    toggleDarkLightMode('dark');
+    toggleDarkLightMode(true);
   } else {
     document.documentElement.setAttribute('data-theme', LIGHT_THEME);
     localStorage.setItem('theme', LIGHT_THEME);
-    toggleDarkLightMode('light');
+    toggleDarkLightMode(false);
   }
 }
 
