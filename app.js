@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 const api = {
   key: '1dcb8c1d3f4fa9eaae971d7ca6c0b6f2',
   base: 'https://api.openweathermap.org/data/2.5/',
@@ -472,4 +472,3 @@ if(currentTheme){
         darkMode();
     }
 }
->>>>>>> 89908b4bedff2d3f9ebf07edfebc6027370645d1
