@@ -175,19 +175,11 @@ function switchTheme(event) {
   if (event.target.checked) {
     document.documentElement.setAttribute('data-theme', DARK_THEME);
     localStorage.setItem('theme', DARK_THEME);
-<<<<<<< HEAD
     toggleDarkLightMode(true);
   } else {
     document.documentElement.setAttribute('data-theme', LIGHT_THEME);
     localStorage.setItem('theme', LIGHT_THEME);
     toggleDarkLightMode(false);
-=======
-    toggleDarkLightMode('dark');
-  } else {
-    document.documentElement.setAttribute('data-theme', LIGHT_THEME);
-    localStorage.setItem('theme', LIGHT_THEME);
-    toggleDarkLightMode('light');
->>>>>>> 89908b4bedff2d3f9ebf07edfebc6027370645d1
   }
 }
 
