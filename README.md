@@ -7,7 +7,9 @@ Also possible to change to dark mode. :sun_with_face: :new_moon:
 ## [View Demo](https://gabrielamcarvalho.github.io/WheatherBySimpsons/)
 ![Homer from the Simpsons Gif](https://media.giphy.com/media/citBl9yPwnUOs/giphy.gif)
 
-## Online Tools 
+##Tools 
+
+:hammer: Code formatting: ESLINT
 
 :grey_exclamation: Icons: [Fontawesome](https://fontawesome.com/)
 
