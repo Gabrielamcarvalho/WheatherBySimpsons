@@ -7,53 +7,22 @@ var api = {
 var searchbox = document.querySelector('.search-box');
 var city = document.querySelector('.city');
 var today = document.querySelector('.date');
-var months, days, now, day, date, month, year;
 var temp = document.querySelector('.temp');
 var currentWeather = document.querySelector('.current .weather');
 var hilow = document.querySelector('.hi-low');
 var gif = document.querySelector('.giphy-embed');
 var container = document.querySelector('.container');
-var icons = document.querySelectorAll('.icon');
 var toggleSwitch = document.querySelector('input[type="checkbox"]');
 var toggleIcon = document.getElementById('toggle-icon');
 var DARK_THEME = 'dark';
-var LIGHT_THEME = 'light'; //function to activate the search box
-
-function setQuery(event) {
-  if (event.keyCode == 13) {
-    getResults(searchbox.value);
-  }
-} //function to get the results from the API
-
-
-function getResults(query) {
-  fetch("".concat(api.base, "weather?q=").concat(query, "&units=metric&APPID=").concat(api.key)).then(function (weather) {
-    return weather.json();
-  }).then(displayResults);
-} //function to display the results
-
-
-function displayResults(weather) {
-  city.innerHTML = "".concat(weather.name, ", ").concat(weather.sys.country);
-  now = new Date();
-  today.innerHTML = dateBuilder(now);
-  temp.innerHTML = "".concat(Math.round(weather.main.temp), "<span>\xB0C</span>");
-  currentWeather.innerHTML = weather.weather[0].main;
-  hilow.innerHTML = "".concat(Math.round(weather.main.temp_min), "\xB0C / ").concat(Math.round(weather.main.temp_max), "\xB0C");
-  modify();
-} //function to get date
-
-
-function dateBuilder(d) {
-  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  day = days[d.getDay()];
-  date = d.getDate();
-  month = months[d.getMonth()];
-  year = d.getFullYear();
-  return "".concat(day, " ").concat(date, " ").concat(month, " ").concat(year);
-} //change the gif and colors depending of current weather
-
+var LIGHT_THEME = 'light';
+var months;
+var days;
+var now;
+var day;
+var date;
+var month;
+var year; // change the gif and colors depending of current weather
 
 function modify() {
   switch (currentWeather.innerHTML) {
@@ -134,13 +103,6 @@ function modify() {
       document.body.style.backgroundColor = 'var(--color11)';
       break;
 
-    case 'Dust':
-      gif.src = 'https://giphy.com/embed/3o6MbaJFu6zMHwglxe';
-      container.style.color = 'var(--color12)';
-      searchbox.style.borderColor = 'var(--color12)';
-      document.body.style.backgroundColor = 'var(--color12)';
-      break;
-
     case 'Ash':
       gif.src = 'https://giphy.com/embed/xT5LMHkEg6runrYJuo';
       container.style.color = 'var(--color13)';
@@ -168,7 +130,53 @@ function modify() {
       searchbox.style.borderColor = 'var(--secondary-color)';
       break;
   }
-} //function to switch theme
+} // function to get date
+
+
+function dateBuilder(d) {
+  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  day = days[d.getDay()];
+  date = d.getDate();
+  month = months[d.getMonth()];
+  year = d.getFullYear();
+  return "".concat(day, " ").concat(date, " ").concat(month, " ").concat(year);
+} // function to display the results
+
+
+function displayResults(weather) {
+  city.innerHTML = "".concat(weather.name, ", ").concat(weather.sys.country);
+  now = new Date();
+  today.innerHTML = dateBuilder(now);
+  temp.innerHTML = "".concat(Math.round(weather.main.temp), "<span>\xB0C</span>");
+  currentWeather.innerHTML = weather.weather[0].main;
+  hilow.innerHTML = "".concat(Math.round(weather.main.temp_min), "\xB0C / ").concat(Math.round(weather.main.temp_max), "\xB0C");
+  modify();
+} // function to get the results from the API
+
+
+function getResults(query) {
+  fetch("".concat(api.base, "weather?q=").concat(query, "&units=metric&APPID=").concat(api.key)).then(function (weather) {
+    return weather.json();
+  }).then(displayResults);
+} // function to activate the search box
+
+
+function setQuery(event) {
+  if (event.keyCode === 13) {
+    getResults(searchbox.value);
+  }
+}
+
+function toggleDarkLightMode(isDark) {
+  toggleIcon.children[0].textContent = isDark ? 'Dark Mode' : 'Light Mode';
+
+  if (isDark) {
+    toggleIcon.children[1].classList.replace('fa-sun', 'fa-moon');
+  } else {
+    toggleIcon.children[1].classList.replace('fa-moon', 'fa-sun');
+  }
+} // function to switch theme
 
 
 function switchTheme(event) {
@@ -181,16 +189,11 @@ function switchTheme(event) {
     localStorage.setItem('theme', LIGHT_THEME);
     toggleDarkLightMode(false);
   }
-}
-
-function toggleDarkLightMode(isDark) {
-  toggleIcon.children[0].textContent = isDark ? 'Dark Mode' : 'Light Mode';
-  isDark ? toggleIcon.children[1].classList.replace('fa-sun', 'fa-moon') : toggleIcon.children[1].classList.replace('fa-moon', 'fa-sun');
-} //event listeners
+} // event listeners
 
 
 searchbox.addEventListener('keypress', setQuery);
-toggleSwitch.addEventListener('change', switchTheme); //check for local storage for theme
+toggleSwitch.addEventListener('change', switchTheme); // check for local storage for theme
 
 var currentTheme = localStorage.getItem('theme');
 
@@ -199,6 +202,6 @@ if (currentTheme) {
 
   if (currentTheme === DARK_THEME) {
     toggleSwitch.checked = true;
-    darkMode();
+    toggleDarkLightMode();
   }
 }

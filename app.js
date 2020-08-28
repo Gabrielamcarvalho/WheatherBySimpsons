@@ -4,88 +4,26 @@ const api = {
 };
 
 const searchbox = document.querySelector('.search-box');
-let city = document.querySelector('.city');
-let today = document.querySelector('.date');
-let months, days, now, day, date, month, year;
-let temp = document.querySelector('.temp');
-let currentWeather = document.querySelector('.current .weather');
-let hilow = document.querySelector('.hi-low');
-let gif = document.querySelector('.giphy-embed');
-let container = document.querySelector('.container');
-let icons = document.querySelectorAll('.icon');
+const city = document.querySelector('.city');
+const today = document.querySelector('.date');
+const temp = document.querySelector('.temp');
+const currentWeather = document.querySelector('.current .weather');
+const hilow = document.querySelector('.hi-low');
+const gif = document.querySelector('.giphy-embed');
+const container = document.querySelector('.container');
 const toggleSwitch = document.querySelector('input[type="checkbox"]');
 const toggleIcon = document.getElementById('toggle-icon');
 const DARK_THEME = 'dark';
 const LIGHT_THEME = 'light';
+let months;
+let days;
+let now;
+let day;
+let date;
+let month;
+let year;
 
-//function to activate the search box
-function setQuery(event) {
-  if (event.keyCode == 13) {
-    getResults(searchbox.value);
- 
-  }
-}
-//function to get the results from the API
-function getResults(query) {
-  fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
-    .then((weather) => {
-      return weather.json();
-    })
-    .then(displayResults);
-}
-
-//function to display the results
-function displayResults(weather) {
-
-  city.innerHTML = `${weather.name}, ${weather.sys.country}`;
-
-  now = new Date();
-  today.innerHTML = dateBuilder(now);
-
-  temp.innerHTML = `${Math.round(weather.main.temp)}<span>°C</span>`;
-
-  currentWeather.innerHTML = weather.weather[0].main;
-
-  hilow.innerHTML = `${Math.round(weather.main.temp_min)}°C / ${Math.round(
-    weather.main.temp_max
-  )}°C`;
-  modify();
-}
-
-//function to get date
-function dateBuilder(d) {
-  months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
-
-  day = days[d.getDay()];
-  date = d.getDate();
-  month = months[d.getMonth()];
-  year = d.getFullYear();
-
-  return `${day} ${date} ${month} ${year}`;
-}
-//change the gif and colors depending of current weather
+// change the gif and colors depending of current weather
 function modify() {
   switch (currentWeather.innerHTML) {
     case 'Clear':
@@ -165,13 +103,6 @@ function modify() {
       document.body.style.backgroundColor = 'var(--color11)';
       break;
 
-    case 'Dust':
-      gif.src = 'https://giphy.com/embed/3o6MbaJFu6zMHwglxe';
-      container.style.color = 'var(--color12)';
-      searchbox.style.borderColor = 'var(--color12)';
-      document.body.style.backgroundColor = 'var(--color12)';
-      break;
-
     case 'Ash':
       gif.src = 'https://giphy.com/embed/xT5LMHkEg6runrYJuo';
       container.style.color = 'var(--color13)';
@@ -200,37 +131,104 @@ function modify() {
       break;
   }
 }
-//function to switch theme
-function switchTheme(event){
-    if(event.target.checked){
-        document.documentElement.setAttribute('data-theme', DARK_THEME);
-        localStorage.setItem('theme', DARK_THEME);
-        toggleDarkLightMode(true);
-    
-    } else{
-        document.documentElement.setAttribute('data-theme', LIGHT_THEME);
-        localStorage.setItem('theme', LIGHT_THEME);
-        toggleDarkLightMode(false);
-    
-    }
-}
-function toggleDarkLightMode(isDark){
-    toggleIcon.children[0].textContent = isDark ? 'Dark Mode' : 'Light Mode';
-   isDark ?  toggleIcon.children[1].classList.replace('fa-sun', 'fa-moon') : toggleIcon.children[1].classList.replace('fa-moon', 'fa-sun');
+// function to get date
+function dateBuilder(d) {
+  months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  day = days[d.getDay()];
+  date = d.getDate();
+  month = months[d.getMonth()];
+  year = d.getFullYear();
+
+  return `${day} ${date} ${month} ${year}`;
 }
 
+// function to display the results
+function displayResults(weather) {
+  city.innerHTML = `${weather.name}, ${weather.sys.country}`;
 
-//event listeners
+  now = new Date();
+  today.innerHTML = dateBuilder(now);
+
+  temp.innerHTML = `${Math.round(weather.main.temp)}<span>°C</span>`;
+
+  currentWeather.innerHTML = weather.weather[0].main;
+
+  hilow.innerHTML = `${Math.round(weather.main.temp_min)}°C / ${Math.round(
+    weather.main.temp_max,
+  )}°C`;
+  modify();
+}
+// function to get the results from the API
+function getResults(query) {
+  fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
+    .then(
+      (weather) => weather.json(),
+    )
+    .then(displayResults);
+}
+
+// function to activate the search box
+function setQuery(event) {
+  if (event.keyCode === 13) {
+    getResults(searchbox.value);
+  }
+}
+
+function toggleDarkLightMode(isDark) {
+  toggleIcon.children[0].textContent = isDark ? 'Dark Mode' : 'Light Mode';
+  if (isDark) {
+    toggleIcon.children[1].classList.replace('fa-sun', 'fa-moon');
+  } else {
+    toggleIcon.children[1].classList.replace('fa-moon', 'fa-sun');
+  }
+}
+// function to switch theme
+function switchTheme(event) {
+  if (event.target.checked) {
+    document.documentElement.setAttribute('data-theme', DARK_THEME);
+    localStorage.setItem('theme', DARK_THEME);
+    toggleDarkLightMode(true);
+  } else {
+    document.documentElement.setAttribute('data-theme', LIGHT_THEME);
+    localStorage.setItem('theme', LIGHT_THEME);
+    toggleDarkLightMode(false);
+  }
+}
+
+// event listeners
 searchbox.addEventListener('keypress', setQuery);
 toggleSwitch.addEventListener('change', switchTheme);
 
-//check for local storage for theme
+// check for local storage for theme
 const currentTheme = localStorage.getItem('theme');
-if(currentTheme){
-    document.documentElement.setAttribute('data-theme', currentTheme);
+if (currentTheme) {
+  document.documentElement.setAttribute('data-theme', currentTheme);
 
-    if(currentTheme === DARK_THEME){
-        toggleSwitch.checked = true;
-        darkMode();
-    }
+  if (currentTheme === DARK_THEME) {
+    toggleSwitch.checked = true;
+    toggleDarkLightMode();
+  }
 }

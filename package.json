@@ -1,0 +1,19 @@
+{
+  "name": "wheatherapp",
+  "version": "1.0.0",
+  "description": "forecast weather",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabrielamcarvalho/WheatherBySimpsons.git"
+  },
+  "author": "Gabriela M. Carvalhonp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gabrielamcarvalho/WheatherBySimpsons/issues"
+  },
+  "homepage": "https://github.com/Gabrielamcarvalho/WheatherBySimpsons#readme"
+}
